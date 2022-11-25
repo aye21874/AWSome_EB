@@ -171,7 +171,7 @@ def get_health():
     return result
 
 
-@app.route("/api/students/<uni>/courses", methods=["GET"])
+@app.route("/api/courses/<uni>", methods=["GET"])
 def get_courses_by_uni(uni):
     #get all courses enrolled by a particular uni
 
@@ -184,6 +184,18 @@ def get_courses_by_uni(uni):
 
     return rsp
 
+@app.route("/api/courses/students/<project_id>", methods=["GET"])
+def get_uni_by_projects(project_id):
+    #get all courses enrolled by a particular uni
+
+    result = ColumbiaStudentResource.get_by_project_id(project_id)
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
 
 if __name__ == "__main__":
     app.run()

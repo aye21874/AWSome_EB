@@ -45,4 +45,23 @@ class ColumbiaStudentResource:
 
         return result
 
+    @staticmethod
+    def get_by_project_id(key):
+        sql = 'select uni from courses.projects a, courses.enrollments b where a.project_id = b.project_id and a.project_id = %s'
+
+        # update this
+
+        conn = ColumbiaStudentResource._get_connection()
+        cur = conn.cursor()
+
+        # print(conn)
+
+        res = cur.execute(sql, args=key)
+
+        result = cur.fetchall()
+
+        # print(result)
+
+        return result
+
 
