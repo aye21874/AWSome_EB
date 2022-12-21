@@ -2,6 +2,8 @@ import logging.handlers
 
 from flask import Flask, request, Response
 
+import sys
+
 from ColumbiaStudentResource import ColumbiaStudentResource
 
 from datetime import datetime
@@ -16,7 +18,7 @@ application = app
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-#I Solve my own problems ( No lecture tomorrow, prof in Europe )
+#I Solve my own problems ( No lecture tomorrow, prof in Paris )
 # app.config['MySQL_HOST'] = 'localhost'
 
 
@@ -194,6 +196,78 @@ def get_uni_by_projects(project_id):
         rsp = Response(json.dumps(result), status=200, content_type="application.json")
     else:
         rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+@app.route("/api/courses/<call_no>", methods=["GET"])
+def get_students_by_call_no(call_no):
+    #get all courses enrolled by a particular uni
+
+    result = ColumbiaStudentResource.get_by_call_no(call_no)
+
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+
+@app.route("/api/courses/<instructor_name>", methods=["GET"])
+def get_courses_by_instructor(instructor_name):
+    #get all courses enrolled by a particular uni
+
+    result = ColumbiaStudentResource.get_by_instructor_name(instructor_name)
+
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+@app.route("/api/courses/sections", methods=["GET"])
+def get_sections():
+    #get all courses enrolled by a particular uni
+
+    result = ColumbiaStudentResource.get_demo()
+
+    if result:
+        rsp = Response(json.dumps(result), status=200, content_type="application.json")
+    else:
+        rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    return rsp
+
+@app.route("/<uni>", methods=["GET", "POST", "DELETE"])
+def get_all(uni):
+    #get all courses enrolled by a particular uni
+    # print('Hello world!', file=sys.stderr)
+
+    if request.method == "GET":
+        result = ColumbiaStudentResource.get_all(uni)
+        result['total_credits'] = str(result['total_credits'])
+        if result:
+            rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        else:
+            rsp = Response("NOT FOUND", status=404, content_type="text/plain")
+
+    if request.method == "POST":
+        #result = ColumbiaStudentResource.get_all(uni)
+        ColumbiaStudentResource.get_all(request.form)
+
+    if request.method == "DELETE":
+        #result = ColumbiaStudentResource.get_all(uni)
+        ColumbiaStudentResource.get_all(uni)
+
+
+
+    # if request.method == "POST":
+    #     pass
+    # else:
+    #     pass
 
     return rsp
 
