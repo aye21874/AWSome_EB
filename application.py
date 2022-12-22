@@ -256,13 +256,23 @@ def get_all(uni):
 
     if request.method == "POST":
         #result = ColumbiaStudentResource.get_all(uni)
-        ColumbiaStudentResource.update(request.form)
+        data = request.get_json()
+        result = ColumbiaStudentResource.update(data)
+        if result > 0:
+            rsp = Response("ADD OK", status=200, content_type="application.json")
+        else:
+            rsp = Response("NOT FOUND", status=404, content_type="text/plain")
         print(request.form)
         print(type(request.form))
 
     if request.method == "DELETE":
         #result = ColumbiaStudentResource.get_all(uni)
-        ColumbiaStudentResource.delete(uni)
+        result = ColumbiaStudentResource.delete(uni)
+
+        if result:
+            rsp = Response(json.dumps(result), status=200, content_type="application.json")
+        else:
+            rsp = Response("NOT FOUND", status=404, content_type="text/plain")
 
 
 

@@ -137,20 +137,25 @@ class ColumbiaStudentResource:
     @staticmethod
     def update(data):
         # sql = 'select * from courses.sections where call_no = %s'
-        sql = "insert into courses.enrollments (call_no, uni, project_id, credits) values ('%s', '%s', '%s', 3);"
+        print(data)
+        sql = "insert into courses.enrollments (courses.enrollments.call_no, courses.enrollments.uni, courses.enrollments.project_id, courses.enrollments.credits) values (%s,%s,%s,3)"
 
         conn = ColumbiaStudentResource._get_connection()
         cur = conn.cursor()
 
         # print(conn)
+        # cur.execute(sql, args=(int(data["call_no"]), str(data["uni"]), str(data["project_id"])))
 
         try:
-            affected_count = cur.execute(sql, args=(data.uni,data.courses,data.projects))
+            affected_count = cur.execute(sql, args=(int(data["call_no"]), str(data["uni"]), str(data["project_id"])))
             conn.commit()
+            print(affected_count)
         except pymysql.err.IntegrityError:
-            pass
+            return 0
         finally:
             cur.close()
+
+        return 1
         # result = cur.fetchone()
 
     def delete(uni):
@@ -169,6 +174,8 @@ class ColumbiaStudentResource:
             pass
         finally:
             cur.close()
+
+        return 1
 
 
 
