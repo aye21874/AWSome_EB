@@ -257,6 +257,8 @@ def get_all(uni):
     if request.method == "POST":
         #result = ColumbiaStudentResource.get_all(uni)
         ColumbiaStudentResource.update(request.form)
+        print(request.form)
+        print(type(request.form))
 
     if request.method == "DELETE":
         #result = ColumbiaStudentResource.get_all(uni)
