@@ -256,11 +256,11 @@ def get_all(uni):
 
     if request.method == "POST":
         #result = ColumbiaStudentResource.get_all(uni)
-        ColumbiaStudentResource.get_all(request.form)
+        ColumbiaStudentResource.update(request.form)
 
     if request.method == "DELETE":
         #result = ColumbiaStudentResource.get_all(uni)
-        ColumbiaStudentResource.get_all(uni)
+        ColumbiaStudentResource.delete(uni)
 
 
 
